@@ -9,10 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const formCustomer = document.getElementById('form-customer');
     const orders = [];
     const ordersTable = document.getElementById('orders');
-    
-    const renderOrders = () =>{
+    const modalOrder = document.getElementById('order_read');
+    const modalOrderActive = document.getElementById('order_active');
+
+    const renderOrders = () => {
         ordersTable.textContent = '';
-        orders.forEach((order, i)=>{
+        orders.forEach((order, i) => {
             ordersTable.innerHTML += `
         <tr class="order" data-number-order="${i}">
         <td>${i+1}</td>
@@ -21,15 +23,43 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${order.deadline}</td>
         </tr>`;
         })
-    }
+        console.log('ordersTable: ', ordersTable);
+    };
 
-   /* ordersTable.addEventListener('click', (event) =>{
+    const openModal = (numberOrder) => {
+        const order = orders[numberOrder];
+        const modal = order.active ? modalOrderActive : modalOrder;
+
+        const firstNameBlock = document.querySelector('.firstName');
+        const titleBlock = document.querySelector('.modal-title');
+        const emailBlock = document.querySelector('.email');
+        const descriptionBlock = document.querySelector('.description');
+        const deadlineBlock = document.querySelector('.deadline');
+        const currencyBlock = document.querySelector('.currency_img');
+        const countBlock = document.querySelector('.count');
+        const phoneBlock = document.querySelector('.phone');
+
+        titleBlock.textContent = order.title;
+        phoneBlock.textContent = order.phone;
+        firstNameBlock.textContent = order.firstName;
+        emailBlock.textContent = order.email;
+        descriptionBlock.textContent = order.description;
+        deadlineBlock.textContent = order.deadline;
+        currencyBlock.textContent = order.currency;
+        countBlock.textContent = order.amount;
+
+        modal.style.display = 'block';
+
+    };
+
+    ordersTable.addEventListener('click', (event) => {
         const target = event.target;
         const targetOrder = target.closest('.order');
-        orders[targetOrder.dataSet.numberOrder]
-    })
-*/
+        if (targetOrder) {
+            openModal(targetOrder.dataset.numberOrder);
+        }
 
+    });
 
     customer.addEventListener('click', () => {
         blockChoice.style.display = 'none';
@@ -83,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
-    
+
 
 
 
