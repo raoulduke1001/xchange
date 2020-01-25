@@ -25,31 +25,61 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         console.log('ordersTable: ', ordersTable);
     };
+    const handlerModal = (event) =>{
+        const target = event.target;
+        const modal = target.closest('.order-modal');
+        const order = orders[modal.numberOrder];
+
+        if(target.closest('.close') || target === modal){
+            modal.style.display = 'none';
+        };
+
+        if(target.classList.contains('get-order') ){
+            order.active = true;
+            modal.style.display = 'none';
+            renderOrders();
+        };   
+    };
 
     const openModal = (numberOrder) => {
         const order = orders[numberOrder];
-        const modal = order.active ? modalOrderActive : modalOrder;
+        const {
+            title,
+            phone,
+            firstName,
+            email,
+            description,
+            deadline,
+            currency,
+            amount,
+            active = false
+        } = order;
+        const modal = active ? modalOrderActive : modalOrder;
 
-        const firstNameBlock = document.querySelector('.firstName');
-        const titleBlock = document.querySelector('.modal-title');
-        const emailBlock = document.querySelector('.email');
-        const descriptionBlock = document.querySelector('.description');
-        const deadlineBlock = document.querySelector('.deadline');
-        const currencyBlock = document.querySelector('.currency_img');
-        const countBlock = document.querySelector('.count');
-        const phoneBlock = document.querySelector('.phone');
 
-        titleBlock.textContent = order.title;
-        phoneBlock.textContent = order.phone;
-        firstNameBlock.textContent = order.firstName;
-        emailBlock.textContent = order.email;
-        descriptionBlock.textContent = order.description;
-        deadlineBlock.textContent = order.deadline;
-        currencyBlock.textContent = order.currency;
-        countBlock.textContent = order.amount;
+        const firstNameBlock = modal.querySelector('.firstName');
+        const titleBlock = modal.querySelector('.modal-title');
+        const emailBlock = modal.querySelector('.email');
+        const descriptionBlock = modal.querySelector('.description');
+        const deadlineBlock = modal.querySelector('.deadline');
+        const currencyBlock = modal.querySelector('.currency_img');
+        const countBlock = modal.querySelector('.count');
+        const phoneBlock = modal.querySelector('.phone');
 
-        modal.style.display = 'block';
+        modal.numberOrder = numberOrder;
+        titleBlock.textContent = title;
+        phoneBlock ? phoneBlock.href = 'tel:' + phone : '';
+        firstNameBlock.textContent = firstName;
+        emailBlock.textContent = email;
+        emailBlock.href = 'mailto:' + email;
+        descriptionBlock.textContent = description;
+        deadlineBlock.textContent = deadline;
+        currencyBlock.className = 'currency_img';
+        currencyBlock.classList.add(currency)
+        countBlock.textContent = amount;
 
+        modal.style.display = 'flex';
+        modal.addEventListener('click', handlerModal)
     };
 
     ordersTable.addEventListener('click', (event) => {
@@ -58,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetOrder) {
             openModal(targetOrder.dataset.numberOrder);
         }
-
     });
 
     customer.addEventListener('click', () => {
