@@ -7,7 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const blockChoice = document.getElementById('block-choice');
     const btnExit = document.getElementById('btn-exit');
     const formCustomer = document.getElementById('form-customer');
-    const orders = [];
+
+    const orders = JSON.parse(localStorage.getItem('freeOrders',)) || [];
+
+    const toStorage =()=>{
+        localStorage.setItem('freeOrders', JSON.stringify(orders))
+    }
+    const calcDeadline = (deadline) =>{
+
+
+    }
+
     const ordersTable = document.getElementById('orders');
     const modalOrder = document.getElementById('order_read');
     const modalOrderActive = document.getElementById('order_active');
@@ -16,29 +26,44 @@ document.addEventListener('DOMContentLoaded', () => {
         ordersTable.textContent = '';
         orders.forEach((order, i) => {
             ordersTable.innerHTML += `
-        <tr class="order" data-number-order="${i}">
+        <tr class="order ${order.active ? "taken" : ""}" 
+        data-number-order="${i}">
         <td>${i+1}</td>
         <td>${order.title}</td>
         <td class="${order.currency}"></td>
         <td>${order.deadline}</td>
         </tr>`;
         })
-        console.log('ordersTable: ', ordersTable);
     };
-    const handlerModal = (event) =>{
+    const handlerModal = (event) => {
         const target = event.target;
         const modal = target.closest('.order-modal');
         const order = orders[modal.numberOrder];
+        const baseAction = ()=>{
+            modal.style.display = 'none';
+            toStorage();
+            renderOrders();
+        }
 
-        if(target.closest('.close') || target === modal){
+        if (target.closest('.close') || target === modal) {
             modal.style.display = 'none';
         };
 
-        if(target.classList.contains('get-order') ){
+        if (target.classList.contains('get-order')) {
             order.active = true;
-            modal.style.display = 'none';
-            renderOrders();
-        };   
+            baseAction();
+        };
+
+        if (target.id === 'capitulation') {
+            order.active = false;
+            baseAction();
+        };
+
+        if (target.id ==='ready') {
+            orders.splice(orders.indexOf(order), 1);
+            baseAction();
+        };
+
     };
 
     const openModal = (numberOrder) => {
@@ -138,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })*/
         formCustomer.reset();
         orders.push(obj);
+        toStorage();
         console.log('orders: ', orders);
 
     });
