@@ -28,9 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return declOfNum(Math.floor(remaining), ['час', 'часа', 'часов'])
     };
 
-
-
-
     const ordersTable = document.getElementById('orders');
     const modalOrder = document.getElementById('order_read');
     const modalOrderActive = document.getElementById('order_active');
@@ -48,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </tr>`;
         })
     };
+
     const handlerModal = (event) => {
         const target = event.target;
         const modal = target.closest('.order-modal');
@@ -79,9 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     };
 
-
-
-
     const openModal = (numberOrder) => {
         const order = orders[numberOrder];
         const {
@@ -95,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
             active = false
         } = order;
         const modal = active ? modalOrderActive : modalOrder;
-
 
         const firstNameBlock = modal.querySelector('.firstName');
         const titleBlock = modal.querySelector('.modal-title');
@@ -123,8 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const sortOrder = (arr, property) => {
-        arr.sort((a, b) => a[property] > b[property] ? 1 : -1 )
-    
+        arr.sort((a, b) => a[property] > b[property] ? 1 : -1)
+
     };
 
     headTable.addEventListener('click', (event) => {
@@ -141,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             toStorage();
             renderOrders();
-            
+
         }
     });
 
@@ -160,13 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
         blockCustomer.style.display = 'block';
         btnExit.style.display = 'block';
     });
+
     freelancer.addEventListener('click', () => {
         blockChoice.style.display = 'none';
         renderOrders();
         blockFreelancer.style.display = 'block';
         btnExit.style.display = 'block';
-
     });
+
     btnExit.addEventListener('click', () => {
         btnExit.style.display = 'none';
         blockCustomer.style.display = 'none';
