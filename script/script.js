@@ -8,26 +8,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnExit = document.getElementById('btn-exit');
     const formCustomer = document.getElementById('form-customer');
 
-    const orders = JSON.parse(localStorage.getItem('freeOrders',)) || [];
+    const orders = JSON.parse(localStorage.getItem('freeOrders', )) || [];
 
-    const declOfNum = (number, titles) => number + " " + titles [(number % 100 > 4 && number % 100 < 20) ?
+    const declOfNum = (number, titles) => number + " " + titles[(number % 100 > 4 && number % 100 < 20) ?
         2 : [2, 0, 1, 1, 1, 2][(number % 10 < 5) ? number % 10 : 5]];
 
-    const toStorage =()=>{
+    const toStorage = () => {
         localStorage.setItem('freeOrders', JSON.stringify(orders))
     };
 
-    const calcDeadline = (date) =>{
+    const calcDeadline = (date) => {
         const deadline = new Date(date);
         const today = Date.now();
-        const remaining = (deadline - today)/1000/60/60 ;
+        const remaining = (deadline - today) / 1000 / 60 / 60;
         if (remaining / 24 > 2) {
-            return declOfNum(Math.floor(remaining/24), ['день', 'дня', 'дней']);
+            return declOfNum(Math.floor(remaining / 24), ['день', 'дня', 'дней']);
         }
         return declOfNum(Math.floor(remaining), ['час', 'часа', 'часов'])
     };
 
- 
+
 
 
     const ordersTable = document.getElementById('orders');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = event.target;
         const modal = target.closest('.order-modal');
         const order = orders[modal.numberOrder];
-        const baseAction = ()=>{
+        const baseAction = () => {
             modal.style.display = 'none';
             toStorage();
             renderOrders();
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             baseAction();
         };
 
-        if (target.id ==='ready') {
+        if (target.id === 'ready') {
             orders.splice(orders.indexOf(order), 1);
             baseAction();
         };
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     customer.addEventListener('click', () => {
         blockChoice.style.display = 'none';
-        const toDay = new Date().toISOString().substring(0,10);
+        const toDay = new Date().toISOString().substring(0, 10);
         document.getElementById('deadline').min = toDay;
         blockCustomer.style.display = 'block';
         btnExit.style.display = 'block';
