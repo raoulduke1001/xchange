@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const blockChoice = document.getElementById('block-choice');
     const btnExit = document.getElementById('btn-exit');
     const formCustomer = document.getElementById('form-customer');
+    const headTable = document.getElementById('headTable');
 
     const orders = JSON.parse(localStorage.getItem('freeOrders', )) || [];
 
@@ -78,6 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     };
 
+
+
+
     const openModal = (numberOrder) => {
         const order = orders[numberOrder];
         const {
@@ -86,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
             firstName,
             email,
             description,
-            deadline,
             currency,
             amount,
             active = false
@@ -118,6 +121,29 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'flex';
         modal.addEventListener('click', handlerModal)
     };
+
+    const sortOrder = (arr, property) => {
+        arr.sort((a, b) => a[property] > b[property] ? 1 : -1 )
+    
+    };
+
+    headTable.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('head-sort')) {
+            if (target.id === 'taskSort') {
+                sortOrder(orders, 'title');
+            }
+            if (target.id === 'currencySort') {
+                sortOrder(orders, 'currency');
+            }
+            if (target.id === 'deadlineSort') {
+                sortOrder(orders, 'deadline');
+            }
+            toStorage();
+            renderOrders();
+            
+        }
+    });
 
     ordersTable.addEventListener('click', (event) => {
         const target = event.target;
